@@ -1,0 +1,28 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N801" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="list.sum" />
+          <option value="typing.Iterator.__getitem__" />
+          <option value="str.*" />
+          <option value="prepare" />
+          <option value="list.is_alive" />
+          <option value="vk_api.*" />
+          <option value="chatbot.token_1.b9ce22c6f7295d84741b8d24056af7fb4df8fb716ca86330717455cff24d51d4da614ff6fc90b6b25b" />
+          <option value="token.*" />
+          <option value="python_base.lesson_014.bowling.Hit1.game" />
+          <option value="run_game" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
