@@ -23,22 +23,30 @@ def input_data():
     """ввод данных для изменения в файле"""
     print('введите текст поиска')
     # name_org = input()
+    list_input, list_replace = [], []
+
     name_org = 'Государственное бюджетное общеобразовательное учреждение Самарской области средняя общеобразовательная школа «Образовательный  центр имени В.Н. Татищева» с. Челно-Вершины муниципального района Челно-Вершинский Самарской области'
     name_prof = 'Н.А. Сергеева'
     name_director = 'Н.В. Моисеева'
     name_spec = 'Специалист по охране труда_____________ М.М. Зайдуллин'
-
+    list_input.append(name_org)
+    list_input.append(name_prof)
+    list_input.append(name_director)
+    list_input.append(name_spec)
     print('введите текст изменения!')
     new_name_org = '{{name_org}}'
     new_name_prof = '{{name_prof}}'
     new_name_director = '{{name_director}}'
     new_name_spec = '{{name_spec}}'
-    return name_org, name_rof, name_spec, name_director, new_name_spec, new_name_prof, new_name_director
-
+    list_replace.append(new_name_org)
+    list_replace.append(new_name_prof)
+    list_replace.append(new_name_director)
+    list_replace.append(new_name_spec)
+    return list_input, list_replace
 
 
 def unzip_archive():
-    # TODO Сделать функцию для ввода пути к архиву и имени архива
+    # TODO Сделать функцию для ввода пути к архиву и имени архива?
     # extract_dir
     # file_name
     # return extract_dir, file_name
@@ -69,17 +77,17 @@ def read_files():
     return
 
 
-def reserch_place():
+def replace_data(list_input, list_replace):
     """поиск текста на замену в файле"""
 
-
-
-def paste_data():
-    pass
-
-
-def save_file():
-    pass
+    # в цикле по файлам
+    #   открыть файл , прочитать файл в буфер
+    #   в цикле по условию
+    #      взять первой значение
+    #      найти место замены,
+    #      сделать замену
+    #
+    # сохранить файл
 
 
 def zip_template():
@@ -94,6 +102,8 @@ def zip_template():
 def main():
     unzip_archive()
     read_files()
+    list_input, list_replace = input_data()
+    replace_data(list_input, list_replace)
 
 
 if __name__ == '__main__':
