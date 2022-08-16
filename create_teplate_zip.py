@@ -89,6 +89,8 @@ def del_paragrafs_docx():
                 break
             else:
                 count -= 1
+
+        # TODO удалить пустые таблицы!
         doc.save(file_path)
 
 
