@@ -26,16 +26,36 @@ def input_data():
     # name_org = input()
     d_input, d_replace = {}, {}
 
-    d_input['name_org'] = 'Государственное бюджетное общеобразовательное учреждение Самарской области средняя общеобразовательная школа «Образовательный  центр имени В.Н. Татищева» с. Челно-Вершины муниципального района Челно-Вершинский Самарской области'
+    d_input['name_org'] = 'Государственное бюджетное общеобразовательное учреждение ' \
+                          'Самарской области средняя общеобразовательная школа ' \
+                          '«Образовательный  центр имени В.Н. Татищева» с. Челно-Вершины ' \
+                          'муниципального района Челно-Вершинский Самарской области'
+    d_input['name_org_var1'] = 'Государственное бюджетное общеобразовательное учреждение '
+    d_input['name_org_var2'] = 'Государственное бюджетное общеобразовательное учреждение'
+    d_input['name_org_var3'] = 'Государственное бюджетное общеобразовательное учреждение Самарской области'
+    d_input['name_org_var4'] = 'Государственное бюджетное общеобразовательное учреждение Самарской области '
+
     d_input['name_prof'] = 'Н.А. Сергеева'
     d_input['name_director'] = 'Н.В. Моисеева'
-    d_input['name_spec'] = 'Специалист по охране труда_____________ М.М. Зайдуллин  '
+    d_input['name_spec'] = 'Специалист  по охране труда_____________ М.М. Зайдуллин'
+    d_input['name_pos_prof'] = "Председатель профкома"
+    d_input['name_pos_direct'] = 'Директор школы'
+    d_input['name_prof_var1'] = 'Н.А.Сергеева'
+    d_input['name_director_var1'] = 'Н.В.Моисеева'
 
     print('введите текст изменения!')
     d_replace['name_org'] = '{{name_org}}'
+    d_input['name_org_var1'] = '{{name_org}}'
+    d_input['name_org_var2'] = '{{name_org}}'
+    d_input['name_org_var3'] = '{{name_org}}'
+    d_input['name_org_var4'] = '{{name_org}}'
     d_replace['name_prof'] = '{{name_prof}}'
     d_replace['name_director'] = '{{name_director}}'
     d_replace['name_spec'] = '{{name_spec}}'
+    d_replace['name_pos_prof'] = '{{name_pos_prof}}'
+    d_replace['name_pos_direct'] = '{{name_pos_direct}}'
+    d_replace['name_prof_var1'] = '{{name_prof}}'
+    d_replace['name_director_var1'] = '{{name_director}}'
 
     return d_input, d_replace
 
@@ -67,27 +87,44 @@ def replace_data(d_input, d_replace):
     for file in os.listdir(folder):
         os.chdir(folder)
         os.getcwd()
-        print(os.getcwd())
+        # print(os.getcwd())
         file_path = os.path.abspath(file)
         print(file,  file_path)
 
         doc = docx.Document(file_path)
         all_paras = doc.paragraphs
-        len(all_paras)
-        print('len', len(all_paras))
+
         for key, value in d_input.items():
-            print('key', key)
-            for a_paras in all_paras:
-                print('a_paras', a_paras.text)
-                print(type(a_paras.text), type(value))
-                print(len(a_paras.text), len(value))
-                if a_paras.text == value:
-                    print('d_replace', d_replace[key])
-                    # a_paras.text = d_replace[key]
-                    # TODO нужны два файла в одной директорри
-                    #  иначе постоянно прыгать за файлами в разные директории
-                    # TODO нужно очистить тектс из параграфа для возможного сравнения
-        doc.save
+            # print('key and value---', key, value)
+            for paragr in all_paras:
+                inline = paragr.runs
+                # print(inline, len(inline))
+                if value in paragr.text:
+                    print('Sucsess!')
+                    print('OLD', paragr.text)
+                    paragr.text = d_replace[key]
+                    print("NEW", paragr.text)
+                # else:
+                #     print(value, '-Fail!')
+                # Loop added to work with runs (strings with same style)
+                # for i in range(len(inline)):
+                #     if 'old text' in inline[i].text:
+                #         text = inline[i].text.replace('old text', 'new text')
+                #         inline[i].text = text
+
+
+                os.chdir(folder_base)
+                # TODO нужны два файла в одной директорри
+                #  иначе постоянно прыгать за файлами в разные директории
+                # TODO нужно очистить тектс из параграфа для возможного сравнения
+
+            # for table in doc.tables:
+            #     for cell in table.cells:
+            #         for paragr in cell.paragraphs:
+            #             if value in paragr.text:
+            #                 paragr.text = d_replace[key]
+                        
+        doc.save(file_path)
     return
 
 
