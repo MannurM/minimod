@@ -18,7 +18,8 @@
 import docx
 import zipfile
 import os
-
+from docx.enum.style import WD_STYLE_TYPE
+from docx.shared import Pt
 
 def input_data():
     """ввод данных для изменения в файле"""
@@ -72,25 +73,23 @@ def del_paragrafs_docx():
         file_path = os.path.join(os.getcwd(), folder, file)
         doc = docx.Document(file_path)
         all_paragrs = doc.paragraphs
-        len_paragrs = len(all_paragrs)
-        print(file)
-
+        all_tables = doc.tables
         count = 1
         for paragr in all_paragrs:
             if "№" in paragr.text:
                 break
             else:
                 count += 1
-        print(count)
         for paragr in all_paragrs:
             delete_paragraph(paragr)
-            print(count)
             if count <= 2:
                 break
             else:
                 count -= 1
-
-        # TODO удалить пустые таблицы!
+        for table in all_tables:
+            if table.cell(0, 0).paragraphs[0].text == '':
+                table._element.getparent().remove(table._element)
+                print('Table delete!')
         doc.save(file_path)
 
 
@@ -99,6 +98,49 @@ def delete_paragraph(paragraph):
     p.getparent().remove(p)
     p._p = p._element = None
     return
+
+
+def general_format():
+    pass
+    """приведение к единому стилю всех документов"""
+    folder = 'Upload_folder'
+    set_styles = set()
+    for file in os.listdir(folder):
+        file_path = os.path.join(os.getcwd(), folder, file)
+        doc = docx.Document(file_path)
+        all_paragrs = doc.paragraphs
+        all_tables = doc.tables
+        general_index = ['1. ', '2. ', '3. ', '4. ', '5. ', '6. ', '7. ', '8. ', '9. ', '10. ', '11. ',  '12. ']
+        print(file)
+        all_styles = doc.styles
+        paragraph_styles = [s for s in all_styles if s.type == WD_STYLE_TYPE.PARAGRAPH]
+
+        for style in paragraph_styles:
+            print('style.name', style.name)
+            set_styles.add(style.name)
+        # for paragr in all_paragrs:
+        #     if 'Общие' in paragr.text:
+        #         print('1')  # стиль 1
+        #     # if general_index in paragr.text:
+        #     #     print('12')
+        #     if '№' in paragr.text:
+        #         print('13')
+        #     if 'ИОТ' in paragr.text:
+        #         print('14')
+    print('all', set_styles)
+    for file in os.listdir(folder):
+        file_path = os.path.join(os.getcwd(), folder, file)
+        doc = docx.Document(file_path)
+        all_paragrs = doc.paragraphs
+        all_tables = doc.tables
+        # TODO привести все стили к одному виду
+        for paragr in all_paragrs:
+            style = doc.styles['Normal']
+            # изменяем настройки шрифта
+            style.font.name = 'Times New Roman'
+            style.font.size = Pt(14)
+        print(file)
+        doc.save(file_path)
 
 
 def unzip_archive():
@@ -112,7 +154,6 @@ def unzip_archive():
 def replace_data(d_input, d_replace):
     """поиск текста на замену в файле"""
     folder = 'Upload_folder'
-
     for file in os.listdir(folder):
         file_path = os.path.join(os.getcwd(), folder, file)
         doc = docx.Document(file_path)
@@ -123,15 +164,12 @@ def replace_data(d_input, d_replace):
                 if value in paragr.text:
                     print('Sucsess!')
                     paragr.text = d_replace[key]
-
-
             for table in doc.tables:
                 for row in table.rows:
                     for cell in row.cells:
                         if value in cell.text:
                             print('Sucsess! Table!')
                             cell.text = d_replace[key]
-
         doc.save(file_path)
     return
 
@@ -146,11 +184,12 @@ def zip_template():
 
 
 def main():
-    unzip_archive()
-    d_input, d_replace = input_data()
-    replace_data(d_input, d_replace)
-    del_paragrafs_docx()
-    zip_template()
+    # unzip_archive()
+    # d_input, d_replace = input_data()
+    # replace_data(d_input, d_replace)
+    # del_paragrafs_docx()
+    # zip_template()
+    general_format()
 
 
 if __name__ == '__main__':
