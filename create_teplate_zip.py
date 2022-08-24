@@ -19,7 +19,8 @@ import docx
 import zipfile
 import os
 from docx.enum.style import WD_STYLE_TYPE
-from docx.shared import Pt
+from docx.shared import Pt, Mm
+
 
 def input_data():
     """ввод данных для изменения в файле"""
@@ -102,7 +103,7 @@ def delete_paragraph(paragraph):
 
 def general_format():
     pass
-    """приведение к единому стилю всех документов"""
+    """приведение текста к единому стилю всех документов"""
     folder = 'Upload_folder'
     set_styles = set()
     for file in os.listdir(folder):
@@ -128,17 +129,26 @@ def general_format():
         #     if 'ИОТ' in paragr.text:
         #         print('14')
     print('all', set_styles)
+
     for file in os.listdir(folder):
         file_path = os.path.join(os.getcwd(), folder, file)
         doc = docx.Document(file_path)
         all_paragrs = doc.paragraphs
         all_tables = doc.tables
-        # TODO привести все стили к одному виду
-        for paragr in all_paragrs:
-            style = doc.styles['Normal']
-            # изменяем настройки шрифта
+        if 'UserHead1' not in set_styles:
+            style = doc.styles.add_style('UserHead1', WD_STYLE_TYPE.PARAGRAPH)
             style.font.name = 'Times New Roman'
             style.font.size = Pt(14)
+            print('Стиль Добавлен!')
+
+        style = doc.styles['UserHead1']
+        if style.font.underline:
+            style.font.underline = False
+
+        for paragr in all_paragrs:
+            paragr.style = 'UserHead1'
+            paragr.paragraph_format.space_before = Mm(2)
+            paragr.paragraph_format.space_after = Mm(2)
         print(file)
         doc.save(file_path)
 
