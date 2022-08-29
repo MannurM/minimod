@@ -106,19 +106,20 @@ def general_format():
     """приведение текста к единому стилю всех документов"""
     folder = 'Upload_folder'
     set_styles = set()
-    for file in os.listdir(folder):
-        file_path = os.path.join(os.getcwd(), folder, file)
-        doc = docx.Document(file_path)
-        all_paragrs = doc.paragraphs
-        all_tables = doc.tables
-        general_index = ['1. ', '2. ', '3. ', '4. ', '5. ', '6. ', '7. ', '8. ', '9. ', '10. ', '11. ',  '12. ']
-        print(file)
-        all_styles = doc.styles
-        paragraph_styles = [s for s in all_styles if s.type == WD_STYLE_TYPE.PARAGRAPH]
+    # for file in os.listdir(folder):
+    #     file_path = os.path.join(os.getcwd(), folder, file)
+    #     doc = docx.Document(file_path)
+        # all_paragrs = doc.paragraphs
+        # all_tables = doc.tables
 
-        for style in paragraph_styles:
-            print('style.name', style.name)
-            set_styles.add(style.name)
+        # general_index = ['1. ', '2. ', '3. ', '4. ', '5. ', '6. ', '7. ', '8. ', '9. ', '10. ', '11. ',  '12. ']
+        # print(file)
+        # all_styles = doc.styles
+        # paragraph_styles = [s for s in all_styles if s.type == WD_STYLE_TYPE.PARAGRAPH]
+
+        # for style in paragraph_styles:
+        #     print('style.name', style.name)
+        #     set_styles.add(style.name)
         # for paragr in all_paragrs:
         #     if 'Общие' in paragr.text:
         #         print('1')  # стиль 1
@@ -128,7 +129,6 @@ def general_format():
         #         print('13')
         #     if 'ИОТ' in paragr.text:
         #         print('14')
-    print('all', set_styles)
 
     for file in os.listdir(folder):
         file_path = os.path.join(os.getcwd(), folder, file)
