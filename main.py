@@ -1,25 +1,68 @@
-# скрипт по пакетной замене данных в файле docx
+# utf-8
+# скрипт  - форматирование файла по образцу(другому файлу) docx
+
+# получение шаблона
+# распаковка шаблона на составляющие, индексирование шаблона
+# распаковка  папки зип архив из своих файлов или чтение папки с файлами
+# чтение файла из папки
+#   индексирование файла
+#   сравнение с шаблоном
+#   изменение файла по шаблону
+#   сохранение файла с новый названием
+# завершение работы.
+
+import docx
+import os
 
 
-# TODO делать ли Web interface
-# TODO FLASK?
-
-# запрос значений полей и сохранение в файл
-# распаковка  папки зип архив из своих файлов
-#   чтение файла из папки
-#   поиск мест
-#   вставка данных
-#   сохранение
-# выход зип архив с изменениями
+def insert_template():
+    pass
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+def unpack_template():
+    pass
 
 
-# Press the green button in the gutter to run the script.
+def insert_files():
+    pass
+
+
+def indexing_file():
+    pass
+
+
+def compare_file():
+    pass
+
+
+def change_file():
+    pass
+
+
+def save_file():
+    pass
+
+
+def read_files():
+    indexing_file()
+    compare_file()
+    change_file()
+    save_file()
+
+
+def quit_mod():
+    pass
+
+
+def main():
+    insert_template()
+    unpack_template()
+    insert_files()
+    read_files()
+    quit_mod()
+
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    main()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
