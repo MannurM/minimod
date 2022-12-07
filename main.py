@@ -13,13 +13,38 @@
 
 import docx
 import os
+import os.path
 
 
 def insert_template():
-    pass
+    # Запросить путь до шаблона
+    # сохранить шаблон в переменную docx_template
+    # передать шаблон дальше
+    print('Введите путь до шаблона')  # скопировать сделать кнопку или функцию
+    path_template = input()
+    # заключить в try except
+    # функция проверки файла по пути
+    # функция проверки расширения шаблона
+    # чтение doc или docx файла, сохранение в docx_templаte
+
+    try:
+        os.path.isfile(path_template)
+        if path_template[:-4] == '.doc' or path_template[:-5] == '.docx':
+            docx_template = open(path_template)
+        else:
+            print('Ваш файл не имеет правильного расширения .doc млм .docx')
+            raise IOError
+    except IOError as e:
+        print(u'не удалось открыть файл')
+        print('Проверьте ваш файл и повторите')
+    else:
+        return docx_template
 
 
-def unpack_template():
+def unpack_template(docx_template):
+    with open(docx_template, 'r' ) as file_teplate:
+        # открыть файл шаблон по строчно и сделать из него шаблон для каждого типа надписи
+
     pass
 
 
@@ -55,8 +80,8 @@ def quit_mod():
 
 
 def main():
-    insert_template()
-    unpack_template()
+    docx_template = insert_template()
+    unpack_template(docx_template)
     insert_files()
     read_files()
     quit_mod()
