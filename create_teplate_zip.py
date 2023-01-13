@@ -2,7 +2,6 @@
 # скрипт по созданию шаблона файлов инструкций docx
 
 
-
 # TODO делать ли Web interface
 # TODO FLASK?
 
@@ -91,6 +90,7 @@ def del_paragrafs_docx():
             if table.cell(0, 0).paragraphs[0].text == '':
                 table._element.getparent().remove(table._element)
                 print('Table delete!')
+        # Удалить пустую таблицу
         doc.save(file_path)
 
 

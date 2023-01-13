@@ -42,11 +42,15 @@ def insert_template():
 
 
 def unpack_template(docx_template):
-    with open(docx_template, 'r' ) as file_template:
+    with open(docx_template, 'r') as file_template:
         # открыть файл шаблон построчно и сделать из него шаблон для каждого типа надписи
         line_list = []
+        dict_styles = {}
         for line in file_template:
+            print(line)
             line_list.append(line.strip())
+
+
             # TODO можно ли так распаковать docx
             # получить стиль строки?? или лучше сначала прочитать еликом файл и конвертировать в,  только потом
             # забирать стили каждого параграфа и индексировать их.
