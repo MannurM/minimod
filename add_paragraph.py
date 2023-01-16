@@ -8,7 +8,8 @@ import shutil
 import zipfile
 
 import docx
-
+from docx.enum.table import WD_TABLE_ALIGNMENT
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 
 def add_path_folder():
     """ввести путь до папки с файлами, прочитать папку, в цикле взять файл, прочитать его по параграфам"""
@@ -78,19 +79,43 @@ def read_files(path_folder):
     return
 
 
-def main():
-    print(1)
-    # search_string, replace_string = input_data()
-    path_folder = add_path_folder()
-    os.chdir(path_folder)
-    read_files(path_folder)
-    styles = []
-    for file_name in os.listdir(path_folder):
-        if file_name == 'instr_1.docx':
-            print('first')
-            doc_1 = docx.Document(path_folder + '\\' + file_name)
-            for paragraph in doc_1.paragraphs:
-                styles.append(paragraph.style)
+# def create_tepl_file(path_folder):
+#     styles = []
+#     for file_name in os.listdir(path_folder):
+#         if file_name == 'instr_1.docx':
+#             print('first')
+#             doc_1 = docx.Document(path_folder + '\\' + file_name)
+#             for parag in doc_1.paragraphs:
+#                 styles.append(parag.style)
+#                 output_row = parag.runs
+#                 for row in parag.runs:
+#                     output_row = parag.add_run(row.text)
+#                     # Font data
+#                     output_row.style.name = row.style.name
+#                     # Size of font data
+#                     output_row.font.size = row.font.size
+#                     # Bold data
+#                     output_row.bold = row.bold
+#                     # Italic data
+#                     output_row.italic = row.italic
+#                     # Underline data
+#                     output_row.underline = row.underline
+#                     # Color data
+#                     output_row.font.color.rgb = row.font.color.rgb
+#
+#     document = docx.Document()
+#     style = document.styles['Normal']
+#     font = style.font
+#     from docx.shared import Pt
+#     font.name = 'Times New Roman'
+#     font.size = Pt(12)
+#     style = document.styles['Instr_Text']
+#     style.hidden = False
+#     style.quick_style = True
+#     style.priorty = 1
+
+
+def compile_file(path_folder):
     for file_name in os.listdir(path_folder):
         print('3', file_name)
         doc = docx.Document(path_folder + '\\' + file_name)
@@ -100,18 +125,22 @@ def main():
             p_text = paragraph.text
             if p_text[:10] == 'Инструкция' or p_text[:10] == 'ИНСТРУКЦИЯ':
                 table = doc_new.add_table(rows=4, cols=1)
+                table.alignment = WD_TABLE_ALIGNMENT.LEFT
                 # получаем ячейку таблицы
                 cell = table.cell(0, 0)
                 # записываем в ячейку данные
                 cell.text = 'Государственное бюджетное общеобразовательное учреждение'
+                cell.paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
                 cell = table.cell(1, 0)
                 # записываем в ячейку данные
                 cell.text = 'Самарской области средняя общеобразовательная школа'
+                cell.paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
                 cell = table.cell(2, 0)
                 cell.text = '«Образовательный  центр имени В.Н. Татищева» с. Челно-Вершины'
+                cell.paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
                 cell = table.cell(3, 0)
                 cell.text = 'муниципального района Челно-Вершинский Самарской области'
-
+                cell.paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
                 table_1 = doc_new.add_table(rows=3, cols=2)
                 cell = table_1.cell(0, 0)
                 cell.text = 'Согласовано'
@@ -136,21 +165,16 @@ def main():
                 print(file_name, anchor)
                 doc_new.add_paragraph(p_text)
                 print('8')
-
-        # for i in range(len(doc.paragraphs)):
-        #     doc.paragraphs[i].style = styles[i]
-
-        # doc = search_replace(doc, search_string, replace_string)
         doc_new.save('new_' + file_name)
-        # получаем первую таблицу в документе
-        # table = doc.tables[0]
 
-        # читаем данные из таблицы
-        # for row in table.rows:
-        #     string = ''
-        #     for cell in row.cells:
-        #         string = string + cell.text + ' '
-        #     print(string)
+def main():
+    print(1)
+    # search_string, replace_string = input_data()
+    path_folder = add_path_folder()
+    os.chdir(path_folder)
+    read_files(path_folder)
+    compile_file(path_folder)
+
 
 
 if __name__ == '__main__':
@@ -164,4 +188,3 @@ if __name__ == '__main__':
 #  и сохранить под старым именем?? или новым ??
 # TODO работа со стилями исходного документа или вообще нужен 1 шаблонный документ?
 #  и как привести все к обному виду единообразию
-
