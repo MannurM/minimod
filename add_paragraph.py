@@ -94,17 +94,12 @@ def main():
     for file_name in os.listdir(path_folder):
         print('3', file_name)
         doc = docx.Document(path_folder + '\\' + file_name)
+        doc_new = docx.Document()
+        anchor = '0'
         for paragraph in doc.paragraphs:
             p_text = paragraph.text
-
             if p_text[:10] == 'Инструкция' or p_text[:10] == 'ИНСТРУКЦИЯ':
-                print('5')
-                paragraph.insert_paragraph_before()
-                paragraph.insert_paragraph_before()
-                paragraph.insert_paragraph_before()
-                paragraph.insert_paragraph_before()
-                print('6')
-                table = doc.insert_table_before(rows=4, cols=1)                   # add_table(rows=4, cols=1)
+                table = doc_new.add_table(rows=4, cols=1)
                 # получаем ячейку таблицы
                 cell = table.cell(0, 0)
                 # записываем в ячейку данные
@@ -116,13 +111,37 @@ def main():
                 cell.text = '«Образовательный  центр имени В.Н. Татищева» с. Челно-Вершины'
                 cell = table.cell(3, 0)
                 cell.text = 'муниципального района Челно-Вершинский Самарской области'
+
+                table_1 = doc_new.add_table(rows=3, cols=2)
+                cell = table_1.cell(0, 0)
+                cell.text = 'Согласовано'
+                cell = table_1.cell(0, 1)
+                cell.text = 'Утверждаю'
+                cell = table_1.cell(1, 0)
+                cell.text = 'Председатель профкома'
+                cell = table_1.cell(2, 0)
+                cell.text = '______________Сергеева Н.А.'
+                cell = table_1.cell(1, 1)
+                cell.text = 'Директор школы'
+                cell = table_1.cell(2, 1)
+                cell.text = '______________Моисеева Н.В.'
+                doc_new.add_paragraph()
+                table_2 = doc_new.add_table(rows=1, cols=2)
+                cell = table_2.cell(0, 1)
+                cell.text = 'Приказ № 142-од от 01.03.2022'
+                doc_new.add_paragraph()
                 print('7')
-        doc.add_paragraph('')
+                anchor = '1'
+            if anchor == '1':
+                print(file_name, anchor)
+                doc_new.add_paragraph(p_text)
+                print('8')
+
         # for i in range(len(doc.paragraphs)):
         #     doc.paragraphs[i].style = styles[i]
 
         # doc = search_replace(doc, search_string, replace_string)
-        doc.save(file_name)
+        doc_new.save('new_' + file_name)
         # получаем первую таблицу в документе
         # table = doc.tables[0]
 
@@ -139,8 +158,10 @@ if __name__ == '__main__':
     main()
 
 
-# TODO Каждый файл  чтобы добавить таблицу нужно перписать?
+#  Каждый файл  чтобы добавить таблицу нужно переписать?
 #  сначала создать новый файл
 #  потом вставить в него элементы в той последовательности которой нужно
 #  и сохранить под старым именем?? или новым ??
+# TODO работа со стилями исходного документа или вообще нужен 1 шаблонный документ?
+#  и как привести все к обному виду единообразию
 
