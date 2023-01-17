@@ -164,8 +164,10 @@ def compile_file(path_folder):
             if anchor == '1':
                 print(file_name, anchor)
                 doc_new.add_paragraph(p_text)
+                # TODO изменить стиль добавляемого текста
                 print('8')
         doc_new.save('new_' + file_name)
+
 
 def main():
     print(1)
@@ -174,7 +176,6 @@ def main():
     os.chdir(path_folder)
     read_files(path_folder)
     compile_file(path_folder)
-
 
 
 if __name__ == '__main__':
