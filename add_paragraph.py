@@ -164,6 +164,13 @@ def compile_file(path_folder):
             if anchor == '1':
                 print(file_name, anchor)
                 doc_new.add_paragraph(p_text)
+                list_format_center = [
+                    "ИОТ", "Инс", "ИНС",'по ',
+                    '1. ', '2. ', '3. ', '4. ', '5. ', '6. ', '7. ', '8. ', '9. ', '10. ', '11. ', '12. ',
+                    'I. ', 'II.', 'III', 'IV.', 'V. ', 'VI.', 'VII', 'IX.', 'X. ', 'XI.', 'XII', 'XV.', 'XVI',
+                ]
+                if p_text[:3] in list_format_center:
+                    paragraph.text.
                 # TODO изменить стиль добавляемого текста
                 print('8')
         doc_new.save('new_' + file_name)
