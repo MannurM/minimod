@@ -87,21 +87,21 @@ def read_files(path_folder):
 #             doc_1 = docx.Document(path_folder + '\\' + file_name)
 #             for parag in doc_1.paragraphs:
 #                 styles.append(parag.style)
-#                 output_row = parag.runs
+#                 para_row = parag.runs
 #                 for row in parag.runs:
-#                     output_row = parag.add_run(row.text)
+#                     para_row = parag.add_run(row.text)
 #                     # Font data
-#                     output_row.style.name = row.style.name
+#                     para_row.style.name = row.style.name
 #                     # Size of font data
-#                     output_row.font.size = row.font.size
+#                     para_row.font.size = row.font.size
 #                     # Bold data
-#                     output_row.bold = row.bold
+#                     para_row.bold = row.bold
 #                     # Italic data
-#                     output_row.italic = row.italic
+#                     para_row.italic = row.italic
 #                     # Underline data
-#                     output_row.underline = row.underline
+#                     para_row.underline = row.underline
 #                     # Color data
-#                     output_row.font.color.rgb = row.font.color.rgb
+#                     para_row.font.color.rgb = row.font.color.rgb
 #
 #     document = docx.Document()
 #     style = document.styles['Normal']
@@ -162,17 +162,35 @@ def compile_file(path_folder):
                 print('7')
                 anchor = '1'
             if anchor == '1':
-                print(file_name, anchor)
-                doc_new.add_paragraph(p_text)
-                list_format_center = [
-                    "ИОТ", "Инс", "ИНС",'по ',
-                    '1. ', '2. ', '3. ', '4. ', '5. ', '6. ', '7. ', '8. ', '9. ', '10. ', '11. ', '12. ',
-                    'I. ', 'II.', 'III', 'IV.', 'V. ', 'VI.', 'VII', 'IX.', 'X. ', 'XI.', 'XII', 'XV.', 'XVI',
-                ]
+                para = doc_new.add_paragraph()
+                list_format_center = ["ИОТ", "Инс", "ИНС", 'по ', '1. ', '2. ', '3. ', '4. ', '5. ', '6. ', '7. ',
+                                      '8. ', '9. ', '10. ', '11. ', '12. ',
+                                      'I. ', 'II.', 'III', 'IV.', 'V. ', 'VI.', 'VII', 'IX.', 'X. ', 'XI.', 'XII',
+                                      'XV.', 'XVI']
+
+                para_row = paragraph.runs
+                
+                for row in para_row:
+                    para_row = para.add_run(row.text)
+
+                    # Font data
+                    # TODO изменить шритф на Times NEw roman, унифицировать  между строчные интервалы
+                    para_row.style.name = row.style.name
+                    # Size of font data
+                    para_row.font.size = row.font.size
+                    # Bold data
+                    para_row.bold = row.bold
+                    # Italic data
+                    para_row.italic = row.italic
+                    # Underline data
+                    para_row.underline = row.underline
+                    # Color data
+                    para_row.font.color.rgb = row.font.color.rgb
                 if p_text[:3] in list_format_center:
-                    paragraph.text.
-                # TODO изменить стиль добавляемого текста
-                print('8')
+                    print('center2', p_text[:3])
+                    # para.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT
+                    para.alignment = 1
+
         doc_new.save('new_' + file_name)
 
 
