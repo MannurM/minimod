@@ -179,15 +179,16 @@ def compile_file(path_folder):
                 anchor = '1'
             if anchor == '1':
                 para = doc_new.add_paragraph()
-                para.alignment = 3  # выравниевание по ширине
-                # TODO унифицировать  междустрочные интервалы? Удалить лишние интервалы?
+                para.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
+                # para.alignment = 3  # выравниевание по ширине
+                para.paragraph_format.line_spacing = 1.0
+                # TODO  Удалить лишние интервалы?
                 # TODO Как унифицировать псоледнюю строку абзаца чтобы не было большых пробелов на строке
                 para_row = paragraph.runs
                 for row in para_row:
                     para_row = para.add_run(row.text)
                     # Font data
                     # изменить шрифт на Times Nеw Roman,
-
                     para_row.style.name = row.style.name
                     # Size and name of font data
                     para_row.font.name = 'Times New Roman'
