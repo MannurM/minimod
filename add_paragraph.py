@@ -10,6 +10,8 @@ import zipfile
 import docx
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
+from docx.shared import Pt
+
 
 def add_path_folder():
     """ввести путь до папки с файлами, прочитать папку, в цикле взять файл, прочитать его по параграфам"""
@@ -116,11 +118,19 @@ def read_files(path_folder):
 
 
 def compile_file(path_folder):
+    def cell_format():
+        cell.paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+        cell.paragraphs[0].runs[0].font.name = 'Times New Roman'
+        cell.paragraphs[0].runs[0].font.size = Pt(12)
+        cell.paragraphs[0].runs[0].font.bold = True
+        return
+
     for file_name in os.listdir(path_folder):
         print('3', file_name)
         doc = docx.Document(path_folder + '\\' + file_name)
         doc_new = docx.Document()
         anchor = '0'
+
         for paragraph in doc.paragraphs:
             p_text = paragraph.text
             if p_text[:10] == 'Инструкция' or p_text[:10] == 'ИНСТРУКЦИЯ':
@@ -130,34 +140,40 @@ def compile_file(path_folder):
                 cell = table.cell(0, 0)
                 # записываем в ячейку данные
                 cell.text = 'Государственное бюджетное общеобразовательное учреждение'
-                cell.paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+                cell_format()
                 cell = table.cell(1, 0)
                 # записываем в ячейку данные
                 cell.text = 'Самарской области средняя общеобразовательная школа'
-                cell.paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+                cell_format()
                 cell = table.cell(2, 0)
                 cell.text = '«Образовательный  центр имени В.Н. Татищева» с. Челно-Вершины'
-                cell.paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+                cell_format()
                 cell = table.cell(3, 0)
                 cell.text = 'муниципального района Челно-Вершинский Самарской области'
-                cell.paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+                cell_format()
                 table_1 = doc_new.add_table(rows=3, cols=2)
                 cell = table_1.cell(0, 0)
                 cell.text = 'Согласовано'
+                cell_format()
                 cell = table_1.cell(0, 1)
                 cell.text = 'Утверждаю'
+                cell_format()
                 cell = table_1.cell(1, 0)
                 cell.text = 'Председатель профкома'
+                cell_format()
                 cell = table_1.cell(2, 0)
                 cell.text = '______________Сергеева Н.А.'
                 cell = table_1.cell(1, 1)
                 cell.text = 'Директор школы'
+                cell_format()
                 cell = table_1.cell(2, 1)
                 cell.text = '______________Моисеева Н.В.'
+                cell_format()
                 doc_new.add_paragraph()
                 table_2 = doc_new.add_table(rows=1, cols=2)
                 cell = table_2.cell(0, 1)
                 cell.text = 'Приказ № 142-од от 01.03.2022'
+                cell_format()
                 doc_new.add_paragraph()
                 print('7')
                 anchor = '1'
@@ -172,11 +188,12 @@ def compile_file(path_folder):
                 
                 for row in para_row:
                     para_row = para.add_run(row.text)
-
                     # Font data
-                    # TODO изменить шритф на Times NEw roman, унифицировать  между строчные интервалы
+                    # изменить шрифт на Times Nеw Roman,
+                    # TODO унифицировать  междустрочные интервалы? Удалить лишние интервалы
                     para_row.style.name = row.style.name
-                    # Size of font data
+                    # Size and name of font data
+                    para_row.font.name = 'Times New Roman'
                     para_row.font.size = row.font.size
                     # Bold data
                     para_row.bold = row.bold
