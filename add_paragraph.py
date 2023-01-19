@@ -179,18 +179,15 @@ def compile_file(path_folder):
                 anchor = '1'
             if anchor == '1':
                 para = doc_new.add_paragraph()
-                list_format_center = ["ИОТ", "Инс", "ИНС", 'по ', '1. ', '2. ', '3. ', '4. ', '5. ', '6. ', '7. ',
-                                      '8. ', '9. ', '10. ', '11. ', '12. ',
-                                      'I. ', 'II.', 'III', 'IV.', 'V. ', 'VI.', 'VII', 'IX.', 'X. ', 'XI.', 'XII',
-                                      'XV.', 'XVI']
-
+                para.alignment = 3  # выравниевание по ширине
+                # TODO унифицировать  междустрочные интервалы? Удалить лишние интервалы?
+                # TODO Как унифицировать псоледнюю строку абзаца чтобы не было большых пробелов на строке
                 para_row = paragraph.runs
-                
                 for row in para_row:
                     para_row = para.add_run(row.text)
                     # Font data
                     # изменить шрифт на Times Nеw Roman,
-                    # TODO унифицировать  междустрочные интервалы? Удалить лишние интервалы
+
                     para_row.style.name = row.style.name
                     # Size and name of font data
                     para_row.font.name = 'Times New Roman'
@@ -203,10 +200,13 @@ def compile_file(path_folder):
                     para_row.underline = row.underline
                     # Color data
                     para_row.font.color.rgb = row.font.color.rgb
+
+                list_format_center = ["ИОТ", "Инс", "ИНС", 'по ', '1. ', '2. ', '3. ', '4. ', '5. ', '6. ', '7. ',
+                                      '8. ', '9. ', '10. ', '11. ', '12. ',
+                                      'I. ', 'II.', 'III', 'IV.', 'V. ', 'VI.', 'VII', 'IX.', 'X. ', 'XI.', 'XII',
+                                      'XV.', 'XVI']
                 if p_text[:3] in list_format_center:
-                    print('center2', p_text[:3])
-                    # para.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT
-                    para.alignment = 1
+                    para.alignment = 1  # Центрирование заголовков по центру
 
         doc_new.save('new_' + file_name)
 
