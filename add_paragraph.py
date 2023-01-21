@@ -139,7 +139,6 @@ def compile_file(path_folder):
                 para.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
                 # para.alignment = 3  # выравниевание по ширине
                 para.paragraph_format.line_spacing = 1.0
-                # TODO  Удалить лишние интервалы?
                 # Как унифицировать псоледнюю строку абзаца чтобы не было больших пробелов на строке
                 # заменить разрыв строки на абзац
                 para_row = paragraph.runs
@@ -183,3 +182,9 @@ if __name__ == '__main__':
 
 # TODO Нужно расписать максимальнов возможные ошибки для выявления и коррекции
 # TODO Нужно сделать единый шаблон для инструкции и на основании его привести все  инструкции к единообразию!
+# TODO  Удалить лишние интервалы?
+
+def delete_paragraph(paragraph):  # Удалить пустой абзац
+    p = paragraph._element
+    p.getparent().remove(p)
+    p._p = p._element = None
