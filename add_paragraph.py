@@ -184,7 +184,7 @@ if __name__ == '__main__':
 # TODO Нужно сделать единый шаблон для инструкции и на основании его привести все  инструкции к единообразию!
 # TODO  Удалить лишние интервалы?
 
-def delete_paragraph(paragraph):  # Удалить пустой абзац
-    p = paragraph._element
-    p.getparent().remove(p)
-    p._p = p._element = None
+# def delete_paragraph(paragraph):  # Удалить пустой абзац
+#     p = paragraph._element
+#     p.getparent().remove(p)
+#     p._p = p._element = None
