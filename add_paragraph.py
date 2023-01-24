@@ -85,11 +85,6 @@ def compile_file(path_folder):
 
         for paragraph in doc.paragraphs:
             p_text = paragraph.text
-            # print(p_text[-1:])
-
-            if p_text[-1:] == '^|':
-                p_text[-1:] = '^p'
-                print('Замена мягкого абзаца')
             if p_text[:10] == 'Инструкция' or p_text[:10] == 'ИНСТРУКЦИЯ':
                 table = doc_new.add_table(rows=4, cols=1)
                 table.alignment = WD_TABLE_ALIGNMENT.LEFT
@@ -182,9 +177,13 @@ if __name__ == '__main__':
 
 # TODO Нужно расписать максимальнов возможные ошибки для выявления и коррекции
 # TODO Нужно сделать единый шаблон для инструкции и на основании его привести все  инструкции к единообразию!
-# TODO  Удалить лишние интервалы?
 
+
+# TODO  Удалить лишние интервалы?
 # def delete_paragraph(paragraph):  # Удалить пустой абзац
 #     p = paragraph._element
 #     p.getparent().remove(p)
 #     p._p = p._element = None
+
+# TODO Порядок -  находим файл, считываем его, конвертируем в тхт, создаем новый файл, добавляем в него шапку,
+# TODO добавляем обзацы и текст в новом формате,  сохраняем в новой папке.
