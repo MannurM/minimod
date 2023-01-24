@@ -85,7 +85,11 @@ def compile_file(path_folder):
 
         for paragraph in doc.paragraphs:
             p_text = paragraph.text
+
             if p_text[:10] == 'Инструкция' or p_text[:10] == 'ИНСТРУКЦИЯ':
+                if p_text[:10] == 'Инструкция':
+                    p_text[:10] = 'ИНСТРУКЦИЯ'
+
                 table = doc_new.add_table(rows=4, cols=1)
                 table.alignment = WD_TABLE_ALIGNMENT.LEFT
                 # получаем ячейку таблицы
@@ -131,7 +135,7 @@ def compile_file(path_folder):
                 anchor = '1'
             if anchor == '1':
                 para = doc_new.add_paragraph()
-                para.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
+                para.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY_LOW
                 # para.alignment = 3  # выравниевание по ширине
                 para.paragraph_format.line_spacing = 1.0
                 # Как унифицировать псоледнюю строку абзаца чтобы не было больших пробелов на строке
@@ -142,9 +146,10 @@ def compile_file(path_folder):
                     # Font data
                     # изменить шрифт на Times Nеw Roman,
                     para_row.style.name = row.style.name
+
                     # Size and name of font data
                     para_row.font.name = 'Times New Roman'
-                    para_row.font.size = row.font.size
+                    para_row.font.size = Pt(12)
                     # Bold data
                     para_row.bold = row.bold
                     # Italic data
@@ -153,6 +158,8 @@ def compile_file(path_folder):
                     para_row.underline = row.underline
                     # Color data
                     para_row.font.color.rgb = row.font.color.rgb
+
+
 
                 list_format_center = ["ИОТ", "Инс", "ИНС", 'по ', '1. ', '2. ', '3. ', '4. ', '5. ', '6. ', '7. ',
                                       '8. ', '9. ', '10. ', '11. ', '12. ',
@@ -187,3 +194,9 @@ if __name__ == '__main__':
 
 # TODO Порядок -  находим файл, считываем его, конвертируем в тхт, создаем новый файл, добавляем в него шапку,
 # TODO добавляем обзацы и текст в новом формате,  сохраняем в новой папке.
+
+# if p_text[-1:] == '^|':
+#     p_text[-1:] = '^p'
+#     print('Замена мягкого абзаца')
+
+# TODO docx2txt спользовать очищенный текст
