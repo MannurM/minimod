@@ -70,13 +70,53 @@ def read_files(path_folder):
     return
 
 
-def clear_file(file):
+def clear_file(path_folder, file):
     rezult_text = docx2txt.process(file)
-    # new_file_name = path_folder + '\\' + 'new_' + '.txt'
+    new_file_name = path_folder + '\\' + 'new_' + '.txt'
     # doc_new = open(new_file_name, 'w')
     # doc_new.write(rezult_text)
     # doc_new.close()
     return rezult_text
+
+
+def read_txt_file(rezult_text):
+    rezult_text_list = rezult_text.splitlines()
+    list_rezult = []
+    for i, val in enumerate(rezult_text_list):
+        if val != '':
+            list_rezult.append(val)
+    # print(list_rezult)
+
+    for string in list_rezult:
+        list_rezult_new = []
+        list_rezult_new = string.split(sep=' ')
+        # print(list_rezult_new)
+        # разбивка по словам
+        print('li', list_rezult_new)
+        spec_simbol = '#\$'
+        for char in spec_simbol:
+            for s in list_rezult_new:
+                print('s', s)
+                # s  - одно слово
+
+                if char in s:
+                    print('ss')
+                    s_list = s.split(sep='\xa0')
+                    print('s_list', s_list)
+            # s_new = s_list.join(s_list)
+
+    # for s in list_rezult:
+    #     print(s)
+    # print(symbol[j:j+3])
+    # if symbol[j:j+3] == "\xa0":
+    #     print('qwer')
+    #     symbol[j] = ' '
+    #     del symbol[j + 1]
+    #     del symbol[j + 2]
+    #     del symbol[j + 3]
+    # print(list_rezult)
+
+    # print(rezult_text_list)
 
 
 def compile_file(path_folder):
@@ -97,9 +137,9 @@ def compile_file(path_folder):
         for paragraph in doc.paragraphs:
             p_text = paragraph.text
             # TODO Как правильно заменить символы в строке
-            # if p_text[:10] == 'Инструкция' or p_text[:10] == 'ИНСТРУКЦИЯ':
-            #     if p_text[:10] == 'Инструкция':
-            #         p_text[:10] = 'ИНСТРУКЦИЯ'
+            if p_text[:10] == 'Инструкция' or p_text[:10] == 'ИНСТРУКЦИЯ':
+                #     if p_text[:10] == 'Инструкция':
+                #         p_text[:10] = 'ИНСТРУКЦИЯ'
 
                 table = doc_new.add_table(rows=4, cols=1)
                 table.alignment = WD_TABLE_ALIGNMENT.LEFT
@@ -145,8 +185,10 @@ def compile_file(path_folder):
                 print('7')
                 anchor = '1'
             if anchor == '1':
-                rezult_text = clear_file(path_file)
-                print('type', type(rezult_text))
+                rezult_text = clear_file(path_folder, path_file)
+                read_txt_file(rezult_text)
+                break
+                # print('type', type(rezult_text), rezult_text)
                 para = doc_new.add_paragraph()
                 para.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
 
@@ -171,8 +213,6 @@ def compile_file(path_folder):
                     para_row.underline = row.underline
                     # Color data
                     para_row.font.color.rgb = row.font.color.rgb
-
-
 
                 list_format_center = ["ИОТ", "Инс", "ИНС", 'по ', '1. ', '2. ', '3. ', '4. ', '5. ', '6. ', '7. ',
                                       '8. ', '9. ', '10. ', '11. ', '12. ',
