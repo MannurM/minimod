@@ -78,6 +78,7 @@ def clear_file(file):
     # doc_new.close()
     return rezult_text
 
+
 def compile_file(path_folder):
     def cell_format():
         cell.paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
@@ -95,10 +96,10 @@ def compile_file(path_folder):
 
         for paragraph in doc.paragraphs:
             p_text = paragraph.text
-
-            if p_text[:10] == 'Инструкция' or p_text[:10] == 'ИНСТРУКЦИЯ':
-                if p_text[:10] == 'Инструкция':
-                    p_text[:10] = 'ИНСТРУКЦИЯ'
+            # TODO Как правильно заменить символы в строке
+            # if p_text[:10] == 'Инструкция' or p_text[:10] == 'ИНСТРУКЦИЯ':
+            #     if p_text[:10] == 'Инструкция':
+            #         p_text[:10] = 'ИНСТРУКЦИЯ'
 
                 table = doc_new.add_table(rows=4, cols=1)
                 table.alignment = WD_TABLE_ALIGNMENT.LEFT
