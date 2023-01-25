@@ -7,6 +7,7 @@ import os
 import shutil
 import zipfile
 
+import docx2txt
 import docx
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
@@ -69,6 +70,14 @@ def read_files(path_folder):
     return
 
 
+def clear_file(file):
+    rezult_text = docx2txt.process(file)
+    # new_file_name = path_folder + '\\' + 'new_' + '.txt'
+    # doc_new = open(new_file_name, 'w')
+    # doc_new.write(rezult_text)
+    # doc_new.close()
+    return rezult_text
+
 def compile_file(path_folder):
     def cell_format():
         cell.paragraphs[0].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
@@ -79,7 +88,8 @@ def compile_file(path_folder):
 
     for file_name in os.listdir(path_folder):
         print('3', file_name)
-        doc = docx.Document(path_folder + '\\' + file_name)
+        path_file = path_folder + '\\' + file_name
+        doc = docx.Document(path_file)
         doc_new = docx.Document()
         anchor = '0'
 
@@ -134,8 +144,11 @@ def compile_file(path_folder):
                 print('7')
                 anchor = '1'
             if anchor == '1':
+                rezult_text = clear_file(path_file)
+                print('type', type(rezult_text))
                 para = doc_new.add_paragraph()
-                para.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY_LOW
+                para.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
+
                 # para.alignment = 3  # выравниевание по ширине
                 para.paragraph_format.line_spacing = 1.0
                 # Как унифицировать псоледнюю строку абзаца чтобы не было больших пробелов на строке
@@ -146,7 +159,6 @@ def compile_file(path_folder):
                     # Font data
                     # изменить шрифт на Times Nеw Roman,
                     para_row.style.name = row.style.name
-
                     # Size and name of font data
                     para_row.font.name = 'Times New Roman'
                     para_row.font.size = Pt(12)
