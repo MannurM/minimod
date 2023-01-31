@@ -6,9 +6,8 @@
 import os
 import shutil
 import zipfile
-
-import docx2txt
 import docx
+
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx.shared import Pt
@@ -19,7 +18,8 @@ from clear_non_read_symbol import clear_non_read_symbol
 def add_path_folder():
     """ввести путь до папки с файлами, прочитать папку, в цикле взять файл, прочитать его по параграфам"""
     print('введите путь до папки с файлами')
-    path_folder = 'C:\\Users\\User\\PycharmProjects\\minimod\\Upload_folder'  # input()
+    # path_folder = 'C:\\Users\\User\\PycharmProjects\\minimod\\Upload_folder'  # input()
+    path_folder = '/home/mannur/PycharmProjects/minimod/Upload_folder'
     if path_folder:
         return path_folder
 
@@ -80,30 +80,33 @@ def compile_file(path_folder):
         return
 
     for file_name in os.listdir(path_folder):
-        print('6', file_name)
-        path_file = path_folder + '\\' + file_name
+        print('6,5', file_name)
+        symbol_s = '/'  # '\\'
+        text_txt = ''
         if file_name:
-            base_file_name = file_name[:-5]
-            file_txt = 'new_' + base_file_name + '.txt'
+            print('6,6', file_name)
             if file_name[-5:] == '.docx':
-                anchor = '0'
-            elif file_txt:
+                print('6,7', file_name)
+                base_file_name = file_name[:-5]
+                file_txt = base_file_name + '.txt'
                 with open(file_txt) as f_txt:
                     text_txt = f_txt.readlines()
             else:
+                print('6,75', file_name)
                 continue
         else:
+            print('6,8', file_name)
             continue
 
+        print('6,9', file_name)
+        path_file = path_folder + symbol_s + file_name
+        print('path_file', path_file)
         doc = docx.Document(path_file)
         doc_new = docx.Document()
-        anchor = ''
+        anchor = '0'
         for paragraph in doc.paragraphs:
             p_text = paragraph.text
             if anchor == '0':
-                # p_text[:10] == 'Инструкция' or p_text[:10] == 'ИНСТРУКЦИЯ':
-                # TODO Как правильно заменить символы в строке
-                # TODO Разрезать строку по пробелам взять первую позицию, заменить ее и слить в общую строку
                 table = doc_new.add_table(rows=4, cols=1)
                 table.alignment = WD_TABLE_ALIGNMENT.LEFT
                 cell = table.cell(0, 0)  # получаем ячейку таблицы
@@ -148,15 +151,16 @@ def compile_file(path_folder):
 
             if anchor == '1':
                 for string in text_txt:
-                    para = doc_new.add_paragraph()
-                    para.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
-                    # para.alignment = 3  # выравниевание по ширине
+                    para = doc_new.add_paragraph(string)
+                    # print('8', string)
+                    para.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
+                    para.alignment = 3  # выравниевание по ширине
                     para.paragraph_format.line_spacing = 1.0
                     # Как унифицировать псоледнюю строку абзаца чтобы не было больших пробелов на строке
                     # заменить разрыв строки на абзац
                     para_row = paragraph.runs
                     for row in para_row:
-                        para_row = para.add_run(string)
+                        para_row = para.add_run()
                         # Font data
                         # изменить шрифт на Times Nеw Roman,
                         para_row.style.name = row.style.name
@@ -172,12 +176,16 @@ def compile_file(path_folder):
                         # Color data
                         para_row.font.color.rgb = row.font.color.rgb
 
-                    list_format_center = ["ИОТ", "Инс", "ИНС", 'по ', '1. ', '2. ', '3. ', '4. ', '5. ', '6. ', '7. ',
-                                          '8. ', '9. ', '10. ', '11. ', '12. ',
+                    list_format_center = ["ИОТ", "Инс", "ИНС", 'по ',
                                           'I. ', 'II.', 'III', 'IV.', 'V. ', 'VI.', 'VII', 'IX.', 'X. ', 'XI.', 'XII',
                                           'XV.', 'XVI']
                     if p_text[:3] in list_format_center:
                         para.alignment = 1  # Центрирование заголовков по центру`
+                    arab_symbol = ['1. ', '2.', '3.', '4.', '5.', '6.', '7.', '8.', '9.']
+                    if p_text[:3] in arab_symbol:
+                        para.alignment = 1
+                    # print('9')
+                    anchor = '2'
         doc_new.save('new_' + file_name)
 
 
@@ -194,8 +202,8 @@ def main():
     compile_file(path_folder)
     print('end')
 
+
 if __name__ == '__main__':
-    print('0')
     main()
 
 # TODO Нужно расписать максимальнов возможные ошибки для выявления и коррекции
@@ -208,11 +216,11 @@ if __name__ == '__main__':
 #     p.getparent().remove(p)
 #     p._p = p._element = None
 
-# TODO Порядок -  находим файл, считываем его, конвертируем в тхт, создаем новый файл, добавляем в него шапку,
+# Порядок -  находим файл, считываем его, конвертируем в тхт, создаем новый файл, добавляем в него шапку,
 # TODO добавляем обзацы и текст в новом формате,  сохраняем в новой папке.
 
 # if p_text[-1:] == '^|':
 #     p_text[-1:] = '^p'
 #     print('Замена мягкого абзаца')
 
-# TODO docx2txt спользовать очищенный текст
+#  docx2txt спользовать очищенный текст
