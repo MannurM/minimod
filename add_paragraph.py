@@ -41,7 +41,7 @@ def unzip_archive():
     if len(os.listdir(extract_dir)) > 0:
         shutil.rmtree(extract_dir)
         os.mkdir(extract_dir)
-    print('1')
+    print('0')
     with zipfile.ZipFile(file_name) as zf:
         zf.extractall(extract_dir)
     return
@@ -80,16 +80,30 @@ def compile_file(path_folder):
         return
 
     for file_name in os.listdir(path_folder):
-        print('3', file_name)
+        print('6', file_name)
         path_file = path_folder + '\\' + file_name
+        if file_name:
+            base_file_name = file_name[:-5]
+            file_txt = 'new_' + base_file_name + '.txt'
+            if file_name[-5:] == '.docx':
+                anchor = '0'
+            elif file_txt:
+                with open(file_txt) as f_txt:
+                    text_txt = f_txt.readlines()
+            else:
+                continue
+        else:
+            continue
+
         doc = docx.Document(path_file)
         doc_new = docx.Document()
-        anchor = '0'
-
+        anchor = ''
         for paragraph in doc.paragraphs:
             p_text = paragraph.text
-            # TODO Как правильно заменить символы в строке
-            if p_text[:10] == 'Инструкция' or p_text[:10] == 'ИНСТРУКЦИЯ':
+            if anchor == '0':
+                # p_text[:10] == 'Инструкция' or p_text[:10] == 'ИНСТРУКЦИЯ':
+                # TODO Как правильно заменить символы в строке
+                # TODO Разрезать строку по пробелам взять первую позицию, заменить ее и слить в общую строку
                 table = doc_new.add_table(rows=4, cols=1)
                 table.alignment = WD_TABLE_ALIGNMENT.LEFT
                 cell = table.cell(0, 0)  # получаем ячейку таблицы
@@ -133,49 +147,52 @@ def compile_file(path_folder):
                 anchor = '1'
 
             if anchor == '1':
-                path_folder = 'C:\\Users\\User\\PycharmProjects\\minimod\\Upload_folder'
-                clear_non_read_symbol(path_folder)
-                para = doc_new.add_paragraph()
-                para.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
+                for string in text_txt:
+                    para = doc_new.add_paragraph()
+                    para.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
+                    # para.alignment = 3  # выравниевание по ширине
+                    para.paragraph_format.line_spacing = 1.0
+                    # Как унифицировать псоледнюю строку абзаца чтобы не было больших пробелов на строке
+                    # заменить разрыв строки на абзац
+                    para_row = paragraph.runs
+                    for row in para_row:
+                        para_row = para.add_run(string)
+                        # Font data
+                        # изменить шрифт на Times Nеw Roman,
+                        para_row.style.name = row.style.name
+                        # Size and name of font data
+                        para_row.font.name = 'Times New Roman'
+                        para_row.font.size = Pt(12)
+                        # Bold data
+                        para_row.bold = row.bold
+                        # Italic data
+                        para_row.italic = row.italic
+                        # Underline data
+                        para_row.underline = row.underline
+                        # Color data
+                        para_row.font.color.rgb = row.font.color.rgb
 
-                # para.alignment = 3  # выравниевание по ширине
-                para.paragraph_format.line_spacing = 1.0
-                # Как унифицировать псоледнюю строку абзаца чтобы не было больших пробелов на строке
-                # заменить разрыв строки на абзац
-                para_row = paragraph.runs
-                for row in para_row:
-                    para_row = para.add_run(row.text)
-                    # Font data
-                    # изменить шрифт на Times Nеw Roman,
-                    para_row.style.name = row.style.name
-                    # Size and name of font data
-                    para_row.font.name = 'Times New Roman'
-                    para_row.font.size = Pt(12)
-                    # Bold data
-                    para_row.bold = row.bold
-                    # Italic data
-                    para_row.italic = row.italic
-                    # Underline data
-                    para_row.underline = row.underline
-                    # Color data
-                    para_row.font.color.rgb = row.font.color.rgb
-
-                list_format_center = ["ИОТ", "Инс", "ИНС", 'по ', '1. ', '2. ', '3. ', '4. ', '5. ', '6. ', '7. ',
-                                      '8. ', '9. ', '10. ', '11. ', '12. ',
-                                      'I. ', 'II.', 'III', 'IV.', 'V. ', 'VI.', 'VII', 'IX.', 'X. ', 'XI.', 'XII',
-                                      'XV.', 'XVI']
-                if p_text[:3] in list_format_center:
-                    para.alignment = 1  # Центрирование заголовков по центру
+                    list_format_center = ["ИОТ", "Инс", "ИНС", 'по ', '1. ', '2. ', '3. ', '4. ', '5. ', '6. ', '7. ',
+                                          '8. ', '9. ', '10. ', '11. ', '12. ',
+                                          'I. ', 'II.', 'III', 'IV.', 'V. ', 'VI.', 'VII', 'IX.', 'X. ', 'XI.', 'XII',
+                                          'XV.', 'XVI']
+                    if p_text[:3] in list_format_center:
+                        para.alignment = 1  # Центрирование заголовков по центру`
         doc_new.save('new_' + file_name)
 
 
 def main():
     print('1')
     path_folder = add_path_folder()
+    print('2')
     os.chdir(path_folder)
+    print('3')
     read_files(path_folder)
+    print('4')
+    clear_non_read_symbol(path_folder)
+    print('5')
     compile_file(path_folder)
-
+    print('end')
 
 if __name__ == '__main__':
     print('0')

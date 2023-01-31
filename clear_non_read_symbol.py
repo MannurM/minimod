@@ -5,7 +5,10 @@ import os
 
 def clear_non_read_symbol(path_folder):
     for file_name in os.listdir(path_folder):
-        new_file_name = path_folder + '\\' + 'new_' + file_name + '.txt'  # новый текстовый файл для записи результата
+        if file_name[-5:] != '.docx':
+            continue
+        base_file_name = file_name[:-5]
+        new_file_name = path_folder + '\\' + 'new_' + base_file_name + '.txt'  # новый текстовый файл для записи результата
         doc_new = open(new_file_name, 'w+')  # Открываем файл с дозаписью
 
         rezult_text = docx2txt.process(path_folder + '\\' + file_name)  # Извлекаем текст в формате txt
