@@ -18,8 +18,8 @@ from clear_non_read_symbol import clear_non_read_symbol
 def add_path_folder():
     """ввести путь до папки с файлами, прочитать папку, в цикле взять файл, прочитать его по параграфам"""
     print('введите путь до папки с файлами')
-    # path_folder = 'C:\\Users\\User\\PycharmProjects\\minimod\\Upload_folder'  # input()
-    path_folder = '/home/mannur/PycharmProjects/minimod/Upload_folder'
+    path_folder = 'C:\\Users\\User\\PycharmProjects\\minimod\\Upload_folder'  # input()
+    # path_folder = '/home/mannur/PycharmProjects/minimod/Upload_folder'
     if path_folder:
         return path_folder
 
@@ -81,7 +81,7 @@ def compile_file(path_folder):
 
     for file_name in os.listdir(path_folder):
         print('6,5', file_name)
-        symbol_s = '/'  # '\\'
+        symbol_s = '\\'  # '/'
         text_txt = ''
         if file_name:
             print('6,6', file_name)
@@ -91,12 +91,15 @@ def compile_file(path_folder):
                 file_txt = base_file_name + '.txt'
                 with open(file_txt) as f_txt:
                     text_txt = f_txt.readlines()
+                    # print('text_txt', text_txt[-1:], text_txt[-2:])
             else:
                 print('6,75', file_name)
                 continue
         else:
             print('6,8', file_name)
             continue
+        for txt in text_txt:
+            txt = txt[:-1]
 
         print('6,9', file_name)
         path_file = path_folder + symbol_s + file_name
@@ -151,16 +154,17 @@ def compile_file(path_folder):
 
             if anchor == '1':
                 for string in text_txt:
-                    para = doc_new.add_paragraph(string)
-                    # print('8', string)
-                    para.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
-                    para.alignment = 3  # выравниевание по ширине
+                    para = doc_new.add_paragraph()
+                    # # print('8', string)
+                    # para.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
+                    # para.alignment = 3  # выравниевание по ширине
                     para.paragraph_format.line_spacing = 1.0
                     # Как унифицировать псоледнюю строку абзаца чтобы не было больших пробелов на строке
                     # заменить разрыв строки на абзац
                     para_row = paragraph.runs
                     for row in para_row:
-                        para_row = para.add_run()
+                        para_row = para.add_run(string)
+                        para.alignment = 3
                         # Font data
                         # изменить шрифт на Times Nеw Roman,
                         para_row.style.name = row.style.name
@@ -181,9 +185,9 @@ def compile_file(path_folder):
                                           'XV.', 'XVI']
                     if p_text[:3] in list_format_center:
                         para.alignment = 1  # Центрирование заголовков по центру`
-                    arab_symbol = ['1. ', '2.', '3.', '4.', '5.', '6.', '7.', '8.', '9.']
-                    if p_text[:3] in arab_symbol:
-                        para.alignment = 1
+                    # arab_symbol = ['1. ', '2.', '3.', '4.', '5.', '6.', '7.', '8.', '9.']
+                    # if p_text[:3] in arab_symbol:
+                    #     para.alignment = 1
                     # print('9')
                     anchor = '2'
         doc_new.save('new_' + file_name)

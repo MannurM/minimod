@@ -4,7 +4,7 @@ import os
 
 
 def clear_non_read_symbol(path_folder):
-    symbol_s = '/'  # '\\'
+    symbol_s = '\\' # '/'
     for file_name in os.listdir(path_folder):
         if file_name[-5:] != '.docx':
             continue
