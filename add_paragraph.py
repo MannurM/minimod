@@ -18,8 +18,8 @@ from clear_non_read_symbol import clear_non_read_symbol
 def add_path_folder():
     """ввести путь до папки с файлами, прочитать папку, в цикле взять файл, прочитать его по параграфам"""
     print('введите путь до папки с файлами')
-    path_folder = 'C:\\Users\\User\\PycharmProjects\\minimod\\Upload_folder'  # input()
-    # path_folder = '/home/mannur/PycharmProjects/minimod/Upload_folder'
+    # path_folder = 'C:\\Users\\User\\PycharmProjects\\minimod\\Upload_folder'  # input()
+    path_folder = '/home/mannur/PycharmProjects/minimod/Upload_folder'
     if path_folder:
         return path_folder
 
@@ -81,7 +81,7 @@ def compile_file(path_folder):
 
     for file_name in os.listdir(path_folder):
         print('6,5', file_name)
-        symbol_s = '\\'  # '/'
+        symbol_s = '/' # '\\'
         text_txt = ''
         if file_name:
             print('6,6', file_name)
@@ -98,20 +98,18 @@ def compile_file(path_folder):
         else:
             print('6,8', file_name)
             continue
-        for txt in text_txt:
-            txt = txt[:-1]
+        # for txt in text_txt:
+        #     txt = txt[:-1]
 
         print('6,9', file_name)
         path_file = path_folder + symbol_s + file_name
-        print('path_file', path_file)
         doc = docx.Document(path_file)
         doc_new = docx.Document()
         anchor = '0'
-        for paragraph in doc.paragraphs:
-            p_text = paragraph.text
+        for string in text_txt:
             if anchor == '0':
                 table = doc_new.add_table(rows=4, cols=1)
-                table.alignment = WD_TABLE_ALIGNMENT.LEFT
+                table.alignment = WD_TABLE_ALIGNMENT.CENTER
                 cell = table.cell(0, 0)  # получаем ячейку таблицы
                 # записываем в ячейку данные
                 cell.text = 'Государственное бюджетное общеобразовательное учреждение'
@@ -149,48 +147,42 @@ def compile_file(path_folder):
                 cell.text = 'Приказ № 142-од от 01.03.2022'
                 cell_format()
                 doc_new.add_paragraph()
+                para = doc_new.add_paragraph()
+                para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER  # Центрирование заголовков по центру`
+                para.add_run(string).bold = True
                 print('7')
                 anchor = '1'
 
-            if anchor == '1':
-                for string in text_txt:
-                    para = doc_new.add_paragraph()
-                    # # print('8', string)
-                    # para.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
-                    # para.alignment = 3  # выравниевание по ширине
-                    para.paragraph_format.line_spacing = 1.0
-                    # Как унифицировать псоледнюю строку абзаца чтобы не было больших пробелов на строке
-                    # заменить разрыв строки на абзац
-                    para_row = paragraph.runs
-                    for row in para_row:
-                        para_row = para.add_run(string)
-                        para.alignment = 3
-                        # Font data
-                        # изменить шрифт на Times Nеw Roman,
-                        para_row.style.name = row.style.name
-                        # Size and name of font data
-                        para_row.font.name = 'Times New Roman'
-                        para_row.font.size = Pt(12)
-                        # Bold data
-                        para_row.bold = row.bold
-                        # Italic data
-                        para_row.italic = row.italic
-                        # Underline data
-                        para_row.underline = row.underline
-                        # Color data
-                        para_row.font.color.rgb = row.font.color.rgb
+            else:
+                p_text = string
+                para = doc_new.add_paragraph()
 
-                    list_format_center = ["ИОТ", "Инс", "ИНС", 'по ',
-                                          'I. ', 'II.', 'III', 'IV.', 'V. ', 'VI.', 'VII', 'IX.', 'X. ', 'XI.', 'XII',
-                                          'XV.', 'XVI']
-                    if p_text[:3] in list_format_center:
-                        para.alignment = 1  # Центрирование заголовков по центру`
-                    # arab_symbol = ['1. ', '2.', '3.', '4.', '5.', '6.', '7.', '8.', '9.']
-                    # if p_text[:3] in arab_symbol:
-                    #     para.alignment = 1
-                    # print('9')
-                    anchor = '2'
+                list_format_center = ["ИОТ", "Инс", "ИНС",
+                                      'I. ', 'II.', 'III', 'IV.', 'V. ', 'VI.', 'VII', 'IX.', 'X. ', 'XI.', 'XII',
+                                      'XV.', 'XVI']
+                arab_symbol = ['1. ', '2. ', '3. ', '4. ', '5. ', '6. ', '7. ', '8. ', '9. ']
+                arab_symbol_2 = ['10. ', '11. ', '12. ', '13. ', '14. ', '15. ', '16. ', '17. ', '18. ', '19. ']
+
+                if p_text[:3] in list_format_center:
+                    para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER  # Центрирование заголовков по центру`
+                    para.add_run(p_text).bold = True
+
+                elif p_text[:3] in arab_symbol or p_text[:4] in arab_symbol_2:
+                    para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+                    para.add_run(p_text).bold = True
+
+                else:
+                    # para.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
+                    p_text = string.replace("\r", "")
+                    p_text = string.replace("\n", "")
+                    para.text = p_text
+                    para.alignment = 0  # выравниевание по ширине
+                    para.paragraph_format.line_spacing = 1.0
+                    # para.add_run.font.name = 'Times New Roman'
+                    # para.add_run.font.size = Pt(12)
+
         doc_new.save('new_' + file_name)
+        os.remove(file_txt)
 
 
 def main():
@@ -211,17 +203,17 @@ if __name__ == '__main__':
     main()
 
 # TODO Нужно расписать максимальнов возможные ошибки для выявления и коррекции
-# TODO Нужно сделать единый шаблон для инструкции и на основании его привести все  инструкции к единообразию!
+# Нужно сделать единый шаблон для инструкции и на основании его привести все  инструкции к единообразию!
 
 
-# TODO  Удалить лишние интервалы?
+#  Удалить лишние интервалы?
 # def delete_paragraph(paragraph):  # Удалить пустой абзац
 #     p = paragraph._element
 #     p.getparent().remove(p)
 #     p._p = p._element = None
 
 # Порядок -  находим файл, считываем его, конвертируем в тхт, создаем новый файл, добавляем в него шапку,
-# TODO добавляем обзацы и текст в новом формате,  сохраняем в новой папке.
+# добавляем обзацы и текст в новом формате,  сохраняем в новой папке.
 
 # if p_text[-1:] == '^|':
 #     p_text[-1:] = '^p'
