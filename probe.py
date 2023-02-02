@@ -1,9 +1,11 @@
 import os
 
-# path_folder = 'C:\\Users\\User\\PycharmProjects\\minimod\\Upload_folder'  # input()
-path_folder = '/home/mannur/PycharmProjects/minimod/Upload_folder'
+path_folder = 'C:\\Users\\User\\PycharmProjects\\minimod\\Upload_folder'  # input()
+# path_folder = '/home/mannur/PycharmProjects/minimod/Upload_folder'
 
-symbol = '/'  # '\\'
+# symbol = '/'  #
+symbol = '\\'
+
 for file_name in os.listdir(path_folder):
     if file_name[-5:] == '.docx':
         continue

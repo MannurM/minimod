@@ -18,8 +18,8 @@ from clear_non_read_symbol import clear_non_read_symbol
 def add_path_folder():
     """ввести путь до папки с файлами, прочитать папку, в цикле взять файл, прочитать его по параграфам"""
     print('введите путь до папки с файлами')
-    # path_folder = 'C:\\Users\\User\\PycharmProjects\\minimod\\Upload_folder'  # input()
-    path_folder = '/home/mannur/PycharmProjects/minimod/Upload_folder'
+    path_folder = 'C:\\Users\\User\\PycharmProjects\\minimod\\Upload_folder'  # input()
+    # path_folder = '/home/mannur/PycharmProjects/minimod/Upload_folder'
     if path_folder:
         return path_folder
 
@@ -81,7 +81,8 @@ def compile_file(path_folder):
 
     for file_name in os.listdir(path_folder):
         print('6,5', file_name)
-        symbol_s = '/' # '\\'
+        symbol_s = '\\'  # '/'
+        # symbol_s = '/'
         text_txt = ''
         if file_name:
             print('6,6', file_name)
@@ -89,9 +90,9 @@ def compile_file(path_folder):
                 print('6,7', file_name)
                 base_file_name = file_name[:-5]
                 file_txt = base_file_name + '.txt'
-                with open(file_txt) as f_txt:
+                with open(file_txt, encoding='utf-8') as f_txt:
                     text_txt = f_txt.readlines()
-                    # print('text_txt', text_txt[-1:], text_txt[-2:])
+                    print('text_txt')
             else:
                 print('6,75', file_name)
                 continue
@@ -103,8 +104,11 @@ def compile_file(path_folder):
 
         print('6,9', file_name)
         path_file = path_folder + symbol_s + file_name
-        doc = docx.Document(path_file)
+        doc = docx.Document(path_file)  # нужен??
         doc_new = docx.Document()
+        style = doc_new.styles['Normal']
+        style.font.name = 'Times New Roman'
+        style.font.size = Pt(14)
         anchor = '0'
         for string in text_txt:
             if anchor == '0':
@@ -176,10 +180,11 @@ def compile_file(path_folder):
                     p_text = string.replace("\r", "")
                     p_text = string.replace("\n", "")
                     para.text = p_text
-                    para.alignment = 0  # выравниевание по ширине
+                    para.alignment = 3  # выравниевание по ширине
+                    run = para.add_run()
                     para.paragraph_format.line_spacing = 1.0
-                    # para.add_run.font.name = 'Times New Roman'
-                    # para.add_run.font.size = Pt(12)
+                    run.font.name = 'Times New Roman'
+                    run.font.size = Pt(12)
 
         doc_new.save('new_' + file_name)
         os.remove(file_txt)
