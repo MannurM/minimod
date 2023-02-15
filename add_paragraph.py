@@ -112,6 +112,7 @@ def compile_file(path_folder):
         anchor = '0'
         for index, string in enumerate(text_txt):
             if anchor == '0':
+                print('Table')
                 table = doc_new.add_table(rows=4, cols=1)
                 table.alignment = WD_TABLE_ALIGNMENT.CENTER
                 cell = table.cell(0, 0)  # получаем ячейку таблицы
@@ -184,10 +185,8 @@ def compile_file(path_folder):
                     para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
                     p_text = string.replace("\r", "")
                     p_text = string.replace("\n", "")
-                    para.add_run(p_text).bold = True
+                    # para.add_run(p_text).bold = True
                     anchor = '2'
-
-
 
                 else:
                     if anchor == '2':

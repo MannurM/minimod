@@ -22,7 +22,7 @@ for file_name in os.listdir(path_folder):
         run = par.add_run()
         text = par.text
         new_text = text
-        del_label = ['\\r', '\\n', '\n', '\r']
+        del_label = ['\\r', '\\n', '\n', '\r', '  ']
         del_label_bef = [' ', '\\t', '\t']
         list_index = []
         for index, txt in enumerate(text):
@@ -31,12 +31,18 @@ for file_name in os.listdir(path_folder):
             if text[index].isalpha() or text[index].isdigit():
                 # print('exit')
                 break
-            if text[0] in del_label_bef:
+            if text[:1] in del_label_bef:
                 list_index.append(index)
 
         for i in list_index:
             print(f' simbol-{ord(text[i])}-', text)
-        par.add_break = False
+            text[i] = ''
+            # text.replace(text[i], "")
+            print(text)
+
+
+
+
 
     doc.save(path_folder + symbol + file_name)
 
