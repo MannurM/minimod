@@ -23,21 +23,19 @@ for file_name in os.listdir(path_folder):
         text = par.text
         new_text = text
         del_label = ['\\r', '\\n', '\n', '\r']
-        del_label_bef = [' ', '\\t']
+        del_label_bef = [' ', '\\t', '\t']
         list_index = []
         for index, txt in enumerate(text):
             if text[index] in del_label:
                 list_index.append(index)
             if text[index].isalpha() or text[index].isdigit():
-                print('exit')
+                # print('exit')
                 break
             if text[0] in del_label_bef:
                 list_index.append(index)
 
-        # print(f'save "{text}", "{list_index}"')
-
         for i in list_index:
-            print(f' simbol-{text[i]}-')
+            print(f' simbol-{ord(text[i])}-', text)
         par.add_break = False
 
     doc.save(path_folder + symbol + file_name)

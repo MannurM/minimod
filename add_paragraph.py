@@ -110,7 +110,7 @@ def compile_file(path_folder):
         style.font.name = 'Times New Roman'
         style.font.size = Pt(14)
         anchor = '0'
-        for string in text_txt:
+        for index, string in enumerate(text_txt):
             if anchor == '0':
                 table = doc_new.add_table(rows=4, cols=1)
                 table.alignment = WD_TABLE_ALIGNMENT.CENTER
@@ -169,14 +169,30 @@ def compile_file(path_folder):
 
                 if p_text[:3] in list_format_center:
                     para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER  # Центрирование заголовков по центру`
+                    p_text = string.replace("\r", "")
+                    # p_text = string.replace("\n", "")
                     para.add_run(p_text).bold = True
 
                 elif p_text[:3] in arab_symbol or p_text[:4] in arab_symbol_2:
                     para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+                    p_text = string.replace("\r", "")
+                    # p_text = string.replace("\n", "")
                     para.add_run(p_text).bold = True
 
+                if p_text[:3] == "ИНС" or p_text[:3] == "Инс":
+                    doc_new.add_paragraph(text_txt[index + 1])
+                    para.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+                    p_text = string.replace("\r", "")
+                    p_text = string.replace("\n", "")
+                    para.add_run(p_text).bold = True
+                    anchor = '2'
+
+
+
                 else:
-                    # para.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
+                    if anchor == '2':
+                        anchor = '1'
+                        continue
                     p_text = string.replace("\r", "")
                     p_text = string.replace("\n", "")
                     para.text = p_text
