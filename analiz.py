@@ -17,6 +17,7 @@ def delete_paragraph(paragraph):  # удаление пустого парагр
     p.getparent().remove(p)
     p._p = p._element = None
 
+
 def analiz(file_name):
     doc = Document(path_folder + symbol + file_name)
     all_paragr = doc.paragraphs
@@ -33,7 +34,7 @@ def analiz(file_name):
         count_par += 1
         print('par')
         for index, txt in enumerate(text):
-            print('txt')
+
             if text[index:index + 3] == "ИНС" or text[index:index + 3] == "Инс":
                 print('cont')
                 count_new = count_par

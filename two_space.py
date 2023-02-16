@@ -1,5 +1,6 @@
 import os
 import docx
+import docx2txt
 from docx import Document
 
 path_folder = 'C:\\Users\\User\\PycharmProjects\\minimod\\Upload_folder'  # input()
@@ -19,25 +20,19 @@ for file_name in os.listdir(path_folder):
     all_paragr = doc.paragraphs
 
     for par in all_paragr:
-        run = par.add_run()
+        # run = par.add_run()
         text = par.text
         new_text = text
-        del_label = ['\\r', '\\n', '\n', '\r', '  ']
-        del_label_bef = [' ', '\\t', '\t']
+
         list_index = []
+        # text = text.lstrip()
+
         for index, txt in enumerate(text):
-            if text[index] in del_label:
-                list_index.append(index)
             if text[index].isalpha() or text[index].isdigit():
                 # print('exit')
                 break
-            if text[:1] in del_label_bef:
-                list_index.append(index)
+            elif text[:1] == ' ':
+                text = text.lstrip()
+        par.text = text
 
-        for i in list_index:
-            print(f' simbol-{ord(text[i])}-', text)
-            text[i] = ''
-            # text.replace(text[i], "")
-            print(text)
-
-    doc.save()
+    doc.save(path_folder + symbol + file_name)

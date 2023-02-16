@@ -1,6 +1,4 @@
 # utf-8
-# план задание
-# получить файл из папки, прочитать его, найти строку с номером приказа, заменить строку, сохранить файл
 
 
 import os
@@ -146,7 +144,7 @@ def compile_file(path_folder):
                 cell = table_1.cell(2, 1)
                 cell.text = '______________Моисеева Н.В.'
                 cell_format()
-                doc_new.add_paragraph()
+
                 table_2 = doc_new.add_table(rows=1, cols=2)
                 cell = table_2.cell(0, 1)
                 cell.text = 'Приказ № 142-од от 01.03.2022'
